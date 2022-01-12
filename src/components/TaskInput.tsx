@@ -1,4 +1,6 @@
+import { addDoc, collection } from "firebase/firestore";
 import { useState } from "react";
+import { firebaseFirestore } from "../firebase";
 import { Task } from "../type/Types";
 
 type Props = {
@@ -33,6 +35,13 @@ const TaskInput: React.FC<Props> = ({ setTasks, tasks }) => {
       title: inputTitle,
       done: false,
     };
+
+    // データベースに格納
+    addDoc(collection(firebaseFirestore, "todos"), {
+      id: count,
+      title: inputTitle,
+      done: false,
+    });
 
     // 追加されるタスクをステートにセット
     setTasks([newTask, ...tasks]);
