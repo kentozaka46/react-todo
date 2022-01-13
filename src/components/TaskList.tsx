@@ -1,3 +1,12 @@
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
+import { firebaseFirestore } from "../firebase";
 import { Task } from "../type/Types";
 import TaskItem from "./TaskItem";
 
@@ -24,13 +33,18 @@ const TaskList: React.FC<Props> = ({ tasks, setTasks }) => {
     );
   };
 
-  // タスクを削除したときの処理
-  const handleDelete = (task: Task) => {
-    setTasks((prev) =>
-      prev.filter((t) => {
-        return t.id !== task.id;
-      })
-    );
+  // タスクをfirebaseから削除する処理
+  const handleDelete = async (task: Task) => {
+    const userCollectionRef = collection(firebaseFirestore, "todos");
+    const q = query(userCollectionRef, where("id", "==", task.id));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach(async (document) => {
+      const userDocumentRef = doc(firebaseFirestore, "todos", document.id);
+      await deleteDoc(userDocumentRef);
+    });
+
+    // ステートを書き換えて、リアルタイムでTODOリストを更新する
+    setTasks((prev) => prev.filter((t) => t.id !== task.id));
   };
 
   return (

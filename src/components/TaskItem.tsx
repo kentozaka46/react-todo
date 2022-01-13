@@ -4,7 +4,7 @@ import { Task } from "../type/Types";
 type Props = {
   task: Task;
   handleDone: (task: Task) => void;
-  handleDelete: (task: Task) => void;
+  handleDelete: (task: Task) => Promise<void>;
 };
 
 /**
