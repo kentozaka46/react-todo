@@ -36,15 +36,15 @@ const TaskInput: React.FC<Props> = ({ setTasks, tasks }) => {
       done: false,
     };
 
+    // 追加されるタスクをステートにセット
+    setTasks([newTask, ...tasks]);
+
     // データベースに格納
     addDoc(collection(firebaseFirestore, "todos"), {
       id: count,
       title: inputTitle,
       done: false,
     });
-
-    // 追加されるタスクをステートにセット
-    setTasks([newTask, ...tasks]);
 
     // 追加されたらタイトルの入力欄を空にする
     setInputTitle("");
