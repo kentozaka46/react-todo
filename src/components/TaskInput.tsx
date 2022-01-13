@@ -58,6 +58,11 @@ const TaskInput: React.FC<Props> = ({ setTasks, tasks }) => {
           type="text"
           value={inputTitle}
           onChange={handleInputChange}
+          onKeyPress={(e) => {
+            if (e.key === "Enter") {
+              handleSubmit();
+            }
+          }}
         />
         <button className="input-btn" onClick={handleSubmit}>
           追加
