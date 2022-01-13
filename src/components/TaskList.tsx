@@ -4,6 +4,7 @@ import {
   doc,
   getDocs,
   query,
+  updateDoc,
   where,
 } from "firebase/firestore";
 import { firebaseFirestore } from "../firebase";
@@ -20,8 +21,17 @@ type Props = {
  * @author K.Kento
  */
 const TaskList: React.FC<Props> = ({ tasks, setTasks }) => {
-  // タスクを完了にしたときの処理
-  const handleDone = (task: Task) => {
+  // タスクのチェックを入れたり外したりする処理
+  const handleDone = async (task: Task) => {
+    const userCollectionRef = collection(firebaseFirestore, "todos");
+    const q = query(userCollectionRef, where("id", "==", task.id));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach(async (document) => {
+      const userDocumentRef = doc(firebaseFirestore, "todos", document.id);
+      await updateDoc(userDocumentRef, { done: !task.done });
+    });
+
+    // チェックがついているかどうかのステートを書き換える
     setTasks((prev) =>
       prev.map((t) => {
         if (t.id === task.id) {
