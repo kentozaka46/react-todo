@@ -1,18 +1,13 @@
 import { addDoc, collection } from "firebase/firestore";
 import { useState } from "react";
 import { firebaseFirestore } from "../firebase";
-import { Task } from "../type/Types";
-
-type Props = {
-  setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
-  tasks: Task[];
-};
+import { TaskInputProps } from "../types/Types";
 
 /**
  * タスクの入力欄のコンポーネント
  * @author K.Kento
  */
-const TaskInput: React.FC<Props> = ({ setTasks, tasks }) => {
+const TaskInput: React.FC<TaskInputProps> = ({ setTasks, tasks }) => {
   // 入力したタイトルを格納するステート
   const [inputTitle, setInputTitle] = useState<string>("");
 

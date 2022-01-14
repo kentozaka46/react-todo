@@ -8,19 +8,14 @@ import {
   where,
 } from "firebase/firestore";
 import { firebaseFirestore } from "../firebase";
-import { Task } from "../type/Types";
+import { Task, TaskListProps } from "../types/Types";
 import TaskItem from "./TaskItem";
-
-type Props = {
-  tasks: Task[];
-  setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
-};
 
 /**
  * タスクのリストのコンポーネント
  * @author K.Kento
  */
-const TaskList: React.FC<Props> = ({ tasks, setTasks }) => {
+const TaskList: React.FC<TaskListProps> = ({ tasks, setTasks }) => {
   // タスクのチェックを入れたり外したりする処理
   const handleDone = async (task: Task) => {
     const todos = collection(firebaseFirestore, "todos");

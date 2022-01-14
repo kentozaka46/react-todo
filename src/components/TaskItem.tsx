@@ -1,17 +1,14 @@
-import { Task } from "../type/Types";
-
-// コンポーネントに渡されるpropsの型
-type Props = {
-  task: Task;
-  handleDone: (task: Task) => void;
-  handleDelete: (task: Task) => Promise<void>;
-};
+import { TaskItemProps } from "../types/Types";
 
 /**
  * タスク1つを表すコンポーネント
  * @author K.Kento
  */
-const TaskItem: React.FC<Props> = ({ task, handleDone, handleDelete }) => {
+const TaskItem: React.FC<TaskItemProps> = ({
+  task,
+  handleDone,
+  handleDelete,
+}) => {
   return (
     <li className={task.done ? "done" : ""}>
       <label>
