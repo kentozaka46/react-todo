@@ -23,21 +23,21 @@ type Props = {
 const TaskList: React.FC<Props> = ({ tasks, setTasks }) => {
   // タスクのチェックを入れたり外したりする処理
   const handleDone = async (task: Task) => {
-    const userCollectionRef = collection(firebaseFirestore, "todos");
-    const q = query(userCollectionRef, where("id", "==", task.id));
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach(async (document) => {
-      const userDocumentRef = doc(firebaseFirestore, "todos", document.id);
-      await updateDoc(userDocumentRef, { done: !task.done });
+    const todos = collection(firebaseFirestore, "todos");
+    const filteredTodos = query(todos, where("id", "==", task.id));
+    const getFilteredTodos = await getDocs(filteredTodos);
+    getFilteredTodos.forEach(async (document) => {
+      const updateTodos = doc(firebaseFirestore, "todos", document.id);
+      await updateDoc(updateTodos, { done: !task.done });
     });
 
     // チェックがついているかどうかのステートを書き換える
     setTasks((prev) =>
-      prev.map((t) => {
-        if (t.id === task.id) {
+      prev.map((value) => {
+        if (value.id === task.id) {
           return { ...task, done: !task.done };
         } else {
-          return t;
+          return value;
         }
       })
     );
@@ -45,16 +45,16 @@ const TaskList: React.FC<Props> = ({ tasks, setTasks }) => {
 
   // タスクをfirebaseから削除する処理
   const handleDelete = async (task: Task) => {
-    const userCollectionRef = collection(firebaseFirestore, "todos");
-    const q = query(userCollectionRef, where("id", "==", task.id));
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach(async (document) => {
-      const userDocumentRef = doc(firebaseFirestore, "todos", document.id);
-      await deleteDoc(userDocumentRef);
+    const todos = collection(firebaseFirestore, "todos");
+    const filteredTodos = query(todos, where("id", "==", task.id));
+    const getFilteredTodos = await getDocs(filteredTodos);
+    getFilteredTodos.forEach(async (document) => {
+      const deleteTodos = doc(firebaseFirestore, "todos", document.id);
+      await deleteDoc(deleteTodos);
     });
 
     // ステートを書き換えて、リアルタイムでTODOリストを更新する
-    setTasks((prev) => prev.filter((t) => t.id !== task.id));
+    setTasks((prev) => prev.filter((value) => value.id !== task.id));
   };
 
   return (
