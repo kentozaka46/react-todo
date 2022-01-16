@@ -48,6 +48,7 @@ const TaskInput: React.FC<TaskInputProps> = ({ setTasks, tasks }) => {
   return (
     <div className="input-form">
       <div className="input-cotainer">
+        <h1>TODO登録</h1>
         <input
           className="task-input"
           type="text"
