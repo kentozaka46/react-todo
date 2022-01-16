@@ -59,6 +59,7 @@ const TaskInput: React.FC<TaskInputProps> = ({ setTasks, tasks }) => {
               handleSubmit();
             }
           }}
+          autoFocus
         />
         <button className="input-btn" onClick={handleSubmit}>
           追加
