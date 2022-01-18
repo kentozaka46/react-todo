@@ -1,5 +1,6 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { firebaseAuth } from "../../firebase";
 
 const SignUp = () => {
@@ -42,6 +43,9 @@ const SignUp = () => {
           <button>登録</button>
         </div>
       </form>
+      <div>
+        <Link to={"/login"}>ログイン画面へ</Link>
+      </div>
     </div>
   );
 };
