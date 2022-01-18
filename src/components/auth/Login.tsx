@@ -1,9 +1,11 @@
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { firebaseAuth } from "../../firebase";
 
 const Login = () => {
+  const navigate = useNavigate();
+
   // 入力されたメールアドレスを格納するステート
   const [email, setEmail] = useState<string>("");
   // 入力されたパスワードを格納するステート
@@ -11,8 +13,9 @@ const Login = () => {
 
   const handleSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault();
-    createUserWithEmailAndPassword(firebaseAuth, email, password).then(
+    signInWithEmailAndPassword(firebaseAuth, email, password).then(
       (userCredential) => {
+        navigate("/");
         const user = userCredential.user;
       }
     );
