@@ -1,23 +1,29 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { firebaseAuth, firebaseFirestore } from "../firebase";
 import { Task } from "../types/Types";
 import TaskInput from "./TaskInput";
 import TaskList from "./TaskList";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/authProvider";
 
 /**
  * TODO入力、TODOリストをまとめたコンポーネント
  * @author K.Kento
  */
 const TaskView: React.FC = () => {
-  // TODOリストを格納するステート
-  const [tasks, setTasks] = useState<Task[]>([]);
+  const { currentUser, setLoading } = useContext(AuthContext);
 
   const navigate = useNavigate();
+
+  // ToDoリストを格納するステート
+  const [tasks, setTasks] = useState<Task[]>([]);
+
+  // ログアウトの処理
   const handleLogout = () => {
     firebaseAuth.signOut();
     navigate("/login");
+    setLoading(false);
   };
 
   // firebaseに格納されているTODOリストを取得する処理
@@ -38,9 +44,15 @@ const TaskView: React.FC = () => {
 
   return (
     <>
-      <TaskInput setTasks={setTasks} tasks={tasks} />
-      <TaskList setTasks={setTasks} tasks={tasks} />
-      <button onClick={handleLogout}>ログアウト</button>
+      {!currentUser ? (
+        <Navigate to="/login" />
+      ) : (
+        <>
+          <TaskInput setTasks={setTasks} tasks={tasks} />
+          <TaskList setTasks={setTasks} tasks={tasks} />
+          <button onClick={handleLogout}>ログアウト</button>
+        </>
+      )}
     </>
   );
 };

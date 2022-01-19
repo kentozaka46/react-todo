@@ -1,9 +1,11 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { firebaseAuth } from "../../firebase";
 
 const SignUp = () => {
+  const navigate = useNavigate();
+
   // 入力されたメールアドレスを格納するステート
   const [email, setEmail] = useState<string>("");
   // 入力されたパスワードを格納するステート
@@ -13,6 +15,7 @@ const SignUp = () => {
     event.preventDefault();
     createUserWithEmailAndPassword(firebaseAuth, email, password).then(
       (userCredential) => {
+        navigate("/login");
         const user = userCredential.user;
       }
     );
