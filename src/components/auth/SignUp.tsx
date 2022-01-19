@@ -40,6 +40,11 @@ const SignUp = () => {
             name="password"
             type="password"
             onChange={(event) => setPassword(event.currentTarget.value)}
+            onKeyPress={(e) => {
+              if (e.key === "Enter") {
+                handleSubmit(e);
+              }
+            }}
           />
         </div>
         <div>
