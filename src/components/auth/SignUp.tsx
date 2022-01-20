@@ -1,51 +1,61 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { firebaseAuth } from "../../firebase";
+import { loginInput } from "../../types/Types";
 
 const SignUp = () => {
   const navigate = useNavigate();
 
-  // 入力されたメールアドレスを格納するステート
-  const [email, setEmail] = useState<string>("");
-  // 入力されたパスワードを格納するステート
-  const [password, setPassword] = useState<string>("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<loginInput>({ mode: "onChange", criteriaMode: "all" });
 
-  const handleSubmit = (event: { preventDefault: () => void }) => {
-    event.preventDefault();
-    createUserWithEmailAndPassword(firebaseAuth, email, password).then(
-      (userCredential) => {
-        navigate("/login");
-        const user = userCredential.user;
-      }
-    );
+  console.log(errors);
+
+  const onSubmit: SubmitHandler<loginInput> = (data) => {
+    createUserWithEmailAndPassword(
+      firebaseAuth,
+      data.address,
+      data.password
+    ).then((userCredential) => {
+      navigate("/login");
+      const user = userCredential.user;
+    });
   };
 
   return (
     <div>
       <h1>ユーザ登録</h1>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <label>メールアドレス</label>
           <input
-            name="email"
             type="email"
             placeholder="email"
-            onChange={(event) => setEmail(event.currentTarget.value)}
+            {...register("address", { required: true })}
           />
+          <p style={{ color: "red" }}>
+            {errors.address && "メールアドレスを入力してください"}
+          </p>
         </div>
         <div>
           <label>パスワード</label>
           <input
-            name="password"
             type="password"
-            onChange={(event) => setPassword(event.currentTarget.value)}
+            {...register("password", { required: true, minLength: 6 })}
             onKeyPress={(e) => {
               if (e.key === "Enter") {
-                handleSubmit(e);
+                handleSubmit(onSubmit);
               }
             }}
           />
+          <p style={{ color: "red" }}>
+            {errors.password?.types?.required && "パスワードを入力してください"}
+            {errors.password?.types?.minLength && "6文字以上で設定してください"}
+          </p>
         </div>
         <div>
           <button>登録</button>
