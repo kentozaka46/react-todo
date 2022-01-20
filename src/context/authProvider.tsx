@@ -2,12 +2,7 @@ import { User } from "firebase/auth";
 import { createContext, useEffect, useState } from "react";
 import Loading from "../components/Loading";
 import { firebaseAuth } from "../firebase";
-
-type AuthContextProps = {
-  currentUser: User | null | undefined;
-  loading: boolean;
-  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
-};
+import { AuthContextProps } from "../types/Types";
 
 const AuthContext = createContext<AuthContextProps>({
   currentUser: undefined,

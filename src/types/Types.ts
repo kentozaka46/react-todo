@@ -1,3 +1,5 @@
+import { User } from "firebase/auth";
+
 // タスクの型
 export type Task = {
     id: number
@@ -28,4 +30,11 @@ export type TaskInputProps = {
 export type loginInput = {
     address: string;
     password: string;
+};
+
+// Authのコンテキストで使うpropsの型
+export type AuthContextProps = {
+    currentUser: User | null | undefined;
+    loading: boolean;
+    setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   };

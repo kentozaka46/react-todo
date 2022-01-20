@@ -4,9 +4,14 @@ import { Link, useNavigate } from "react-router-dom";
 import { firebaseAuth } from "../../firebase";
 import { loginInput } from "../../types/Types";
 
+/**
+ * サインアップ画面のコンポーネント
+ * @author K.Kento
+ */
 const SignUp = () => {
   const navigate = useNavigate();
 
+  // React Hook Formで使う定数の宣言
   const {
     register,
     handleSubmit,
@@ -15,6 +20,7 @@ const SignUp = () => {
 
   console.log(errors);
 
+  // ユーザー作成の処理
   const onSubmit: SubmitHandler<loginInput> = (data) => {
     createUserWithEmailAndPassword(
       firebaseAuth,

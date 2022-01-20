@@ -4,15 +4,21 @@ import { Link, useNavigate } from "react-router-dom";
 import { firebaseAuth } from "../../firebase";
 import { loginInput } from "../../types/Types";
 
+/**
+ * ログイン画面のコンポーネント
+ * @author K.Kento
+ */
 const Login = () => {
   const navigate = useNavigate();
 
+  // React Hook Formで使う定数の宣言
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<loginInput>({ mode: "onChange", criteriaMode: "all" });
 
+  // ログイン処理
   const onSubmit: SubmitHandler<loginInput> = (data) => {
     signInWithEmailAndPassword(firebaseAuth, data.address, data.password).then(
       (userCredential) => {
