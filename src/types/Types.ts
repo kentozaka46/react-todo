@@ -23,3 +23,9 @@ export type TaskInputProps = {
     setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
     tasks: Task[];
 };
+
+// ログイン時の入力値の型
+export type loginInput = {
+    address: string;
+    password: string;
+  };
