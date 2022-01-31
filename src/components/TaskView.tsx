@@ -6,6 +6,7 @@ import TaskInput from "./TaskInput";
 import TaskList from "./TaskList";
 import { Navigate, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/authProvider";
+import { deleteUser, getAuth } from "firebase/auth";
 
 /**
  * TODO入力、TODOリストをまとめたコンポーネント
@@ -16,14 +17,26 @@ const TaskView: React.FC = () => {
 
   const navigate = useNavigate();
 
+  const loginUser = getAuth().currentUser;
+
   // ToDoリストを格納するステート
   const [tasks, setTasks] = useState<Task[]>([]);
 
   // ログアウトの処理
-  const handleLogout = () => {
+  const onLogout = () => {
     firebaseAuth.signOut();
     navigate("/login");
     setLoading(false);
+  };
+
+  // ユーザー削除の処理
+  const deleteAccount = () => {
+    if (loginUser) {
+      deleteUser(loginUser).then(() => {
+        navigate("/login");
+        setLoading(false);
+      });
+    }
   };
 
   // firebaseに格納されているTODOリストを取得する処理
@@ -50,7 +63,12 @@ const TaskView: React.FC = () => {
         <>
           <TaskInput setTasks={setTasks} tasks={tasks} />
           <TaskList setTasks={setTasks} tasks={tasks} />
-          <button onClick={handleLogout}>ログアウト</button>
+          <div>
+            <button onClick={onLogout}>ログアウト</button>
+          </div>
+          <div>
+            <button onClick={deleteAccount}>アカウント削除</button>
+          </div>
         </>
       )}
     </>
