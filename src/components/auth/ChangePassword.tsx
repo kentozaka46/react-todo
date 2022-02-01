@@ -8,7 +8,7 @@ import { loginInput } from "../../types/Types";
  * サインアップ画面のコンポーネント
  * @author K.Kento
  */
-const SignUp = () => {
+const ChangePassword = () => {
   const navigate = useNavigate();
 
   // React Hook Formで使う定数の宣言
@@ -18,7 +18,7 @@ const SignUp = () => {
     formState: { errors },
   } = useForm<loginInput>({ mode: "onChange", criteriaMode: "all" });
 
-  // ユーザー作成の処理
+  // パスワード変更の処理
   const onSubmit: SubmitHandler<loginInput> = (data) => {
     createUserWithEmailAndPassword(
       firebaseAuth,
@@ -31,21 +31,21 @@ const SignUp = () => {
 
   return (
     <div>
-      <h1>ユーザ登録</h1>
+      <h1>パスワード変更</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
-          <label>メールアドレス</label>
+          <label>新しいパスワード</label>
           <input
-            type="aaa@test.com"
-            placeholder="email"
-            {...register("address", { required: true })}
+            type="password"
+            {...register("password", { required: true, minLength: 6 })}
           />
           <p style={{ color: "red" }}>
-            {errors.address && "メールアドレスを入力してください"}
+            {errors.password?.types?.required && "パスワードを入力してください"}
+            {errors.password?.types?.minLength && "6文字以上で設定してください"}
           </p>
         </div>
         <div>
-          <label>パスワード</label>
+          <label>新しいパスワード(確認)</label>
           <input
             type="password"
             {...register("password", { required: true, minLength: 6 })}
@@ -61,7 +61,7 @@ const SignUp = () => {
           </p>
         </div>
         <div>
-          <button>登録</button>
+          <button>変更</button>
         </div>
       </form>
       <div>
@@ -71,4 +71,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default ChangePassword;
