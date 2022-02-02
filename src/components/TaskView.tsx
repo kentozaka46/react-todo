@@ -27,14 +27,16 @@ const TaskView: React.FC = () => {
     firebaseAuth.signOut();
     navigate("/login");
     setLoading(false);
+    alert("ログアウトしました！");
   };
 
-  // ユーザー削除の処理
+  // アカウント削除の処理
   const deleteAccount = () => {
     if (loginUser) {
       deleteUser(loginUser).then(() => {
         navigate("/login");
         setLoading(false);
+        alert("アカウントを削除しました");
       });
     }
   };

@@ -26,6 +26,7 @@ const SignUp = () => {
       data.password
     ).then((userCredential) => {
       navigate("/login");
+      alert("登録が完了しました！");
     });
   };
 

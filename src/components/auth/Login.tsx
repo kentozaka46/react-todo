@@ -23,7 +23,7 @@ const Login = () => {
     signInWithEmailAndPassword(firebaseAuth, data.address, data.password).then(
       (userCredential) => {
         navigate("/");
-        const user = userCredential.user;
+        alert("ログインしました！");
       }
     );
   };

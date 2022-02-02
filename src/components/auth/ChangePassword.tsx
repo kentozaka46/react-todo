@@ -26,6 +26,7 @@ const ChangePassword = () => {
       data.password
     ).then((userCredential) => {
       navigate("/login");
+      alert("パスワードを変更しました！");
     });
   };
 
