@@ -30,7 +30,7 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, setTasks }) => {
 
   // タスクを完了に変更する処理
   const doneList = (name: string) => {
-    dispatch({ type: "DONE_LIST", payload: name });
+    dispatch({ type: "DONE_LIST", payload: { name: name } });
   };
 
   // タスクのチェックを入れたり外したりする処理
@@ -71,7 +71,7 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, setTasks }) => {
 
   // タスクを削除する処理
   const deleteList = (name: string) => {
-    dispatch({ type: "DELETE_LIST", payload: name });
+    dispatch({ type: "DELETE_LIST", payload: { name: name } });
   };
 
   return (

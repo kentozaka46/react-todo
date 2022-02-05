@@ -87,6 +87,11 @@ const TaskInput: React.FC<TaskInputProps> = ({ setTasks, tasks }) => {
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
+          onKeyPress={(e) => {
+            if (e.key === "Enter") {
+              addList();
+            }
+          }}
         />
         <button onClick={addList}>追加</button>
       </div>
