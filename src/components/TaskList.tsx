@@ -7,6 +7,7 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
+import { useDispatch, useSelector } from "react-redux";
 import { firebaseFirestore } from "../firebase";
 import { Task, TaskListProps } from "../types/Types";
 import TaskItem from "./TaskItem";
@@ -16,6 +17,22 @@ import TaskItem from "./TaskItem";
  * @author K.Kento
  */
 const TaskList: React.FC<TaskListProps> = ({ tasks, setTasks }) => {
+  const dispatch = useDispatch();
+  // Storeに保管されているToDoリストの取得
+  const lists = useSelector(
+    (state: {
+      lists: {
+        name: string;
+        complete: boolean;
+      }[];
+    }) => state.lists
+  );
+
+  // タスクを完了に変更する処理
+  const doneList = (name: string) => {
+    dispatch({ type: "DONE_LIST", payload: name });
+  };
+
   // タスクのチェックを入れたり外したりする処理
   const handleDone = async (task: Task) => {
     const todos = collection(firebaseFirestore, "todos");
@@ -52,6 +69,11 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, setTasks }) => {
     setTasks((prev) => prev.filter((value) => value.id !== task.id));
   };
 
+  // タスクを削除する処理
+  const deleteList = (name: string) => {
+    dispatch({ type: "DELETE_LIST", payload: name });
+  };
+
   return (
     <div className="tasklist-container">
       {tasks.length <= 0 ? (
@@ -68,6 +90,26 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, setTasks }) => {
           ))}
         </ul>
       )}
+      <h2>未完了のTodoリスト</h2>
+      <ul>
+        {lists
+          .filter((list) => list.complete === false)
+          .map((list, index) => (
+            <div key={index}>
+              {list.name}
+              <button onClick={() => doneList(list.name)}>完了</button>
+              <button onClick={() => deleteList(list.name)}>削除</button>
+            </div>
+          ))}
+      </ul>
+      <h2>完了したTodoリスト</h2>
+      <ul>
+        {lists
+          .filter((list) => list.complete === true)
+          .map((list, index) => (
+            <div key={index}>{list.name}</div>
+          ))}
+      </ul>
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import { addDoc, collection } from "firebase/firestore";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { firebaseFirestore } from "../firebase";
 import { TaskInputProps } from "../types/Types";
 
@@ -8,11 +9,15 @@ import { TaskInputProps } from "../types/Types";
  * @author K.Kento
  */
 const TaskInput: React.FC<TaskInputProps> = ({ setTasks, tasks }) => {
+  const dispatch = useDispatch();
+
   // 入力したタイトルを格納するステート
   const [inputTitle, setInputTitle] = useState<string>("");
-
+  const [name, setName] = useState<string>("");
   // idをカウントするステート
   const [count, setCount] = useState<number>(tasks.length + 1);
+  // タスクが完了しているかどうかのステート
+  const [complete, setComplete] = useState<boolean>(false);
 
   // タイトルが入力されたときの処理
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,6 +50,20 @@ const TaskInput: React.FC<TaskInputProps> = ({ setTasks, tasks }) => {
     setInputTitle("");
   };
 
+  // Reduxでタスクを追加する処理
+  const addList = () => {
+    if (!name) return;
+    setComplete(false);
+    dispatch({
+      type: "ADD_LIST",
+      payload: {
+        name,
+        complete,
+      },
+    });
+    setName("");
+  };
+
   return (
     <div className="input-form">
       <div className="input-cotainer">
@@ -64,6 +83,12 @@ const TaskInput: React.FC<TaskInputProps> = ({ setTasks, tasks }) => {
         <button className="input-btn" onClick={handleSubmit}>
           追加
         </button>
+        <input
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+        <button onClick={addList}>追加</button>
       </div>
     </div>
   );
