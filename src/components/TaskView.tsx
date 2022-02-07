@@ -4,7 +4,7 @@ import { firebaseAuth, firebaseFirestore } from "../firebase";
 import { Task } from "../types/Types";
 import TaskInput from "./TaskInput";
 import TaskList from "./TaskList";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/authProvider";
 import { deleteUser, getAuth } from "firebase/auth";
 
@@ -68,6 +68,7 @@ const TaskView: React.FC = () => {
           <div>
             <button onClick={onLogout}>ログアウト</button>
           </div>
+          <Link to={"/changePassword"}>パスワード変更</Link>
           <div>
             <button onClick={deleteAccount}>アカウント削除</button>
           </div>
