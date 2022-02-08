@@ -32,6 +32,12 @@ export type loginInput = {
     password: string;
 };
 
+// ログイン時の入力値の型
+export type changePasswordInput = {
+    password: string;
+    newPassword: string;
+};
+
 // Authのコンテキストで使うpropsの型
 export type AuthContextProps = {
     currentUser: User | null | undefined;
