@@ -2,7 +2,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { firebaseAuth } from "../../firebase";
-import { loginInput } from "../../types/Types";
+import { changePasswordInput, loginInput } from "../../types/Types";
 
 /**
  * サインアップ画面のコンポーネント
@@ -16,14 +16,14 @@ const ChangePassword = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<loginInput>({ mode: "onChange", criteriaMode: "all" });
+  } = useForm<changePasswordInput>({ criteriaMode: "all" });
 
   // パスワード変更の処理
-  const onSubmit: SubmitHandler<loginInput> = (data) => {
+  const onSubmit: SubmitHandler<changePasswordInput> = (data) => {
     createUserWithEmailAndPassword(
       firebaseAuth,
-      data.address,
-      data.password
+      data.password,
+      data.newPassword
     ).then((userCredential) => {
       navigate("/login");
       alert("パスワードを変更しました！");
@@ -49,7 +49,7 @@ const ChangePassword = () => {
           <label>新しいパスワード(確認)</label>
           <input
             type="password"
-            {...register("password", { required: true, minLength: 6 })}
+            {...register("newPassword", { required: true, minLength: 6 })}
             onKeyPress={(e) => {
               if (e.key === "Enter") {
                 handleSubmit(onSubmit);
@@ -66,7 +66,7 @@ const ChangePassword = () => {
         </div>
       </form>
       <div>
-        <Link to={"/login"}>ログイン画面へ</Link>
+        <Link to={"/"}>TODO登録画面へ</Link>
       </div>
     </div>
   );
