@@ -1,8 +1,8 @@
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { updatePassword } from "firebase/auth";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { firebaseAuth } from "../../firebase";
-import { changePasswordInput, loginInput } from "../../types/Types";
+import { changePasswordInput } from "../../types/Types";
 
 /**
  * サインアップ画面のコンポーネント
@@ -10,6 +10,8 @@ import { changePasswordInput, loginInput } from "../../types/Types";
  */
 const ChangePassword = () => {
   const navigate = useNavigate();
+
+  const user = firebaseAuth.currentUser;
 
   // React Hook Formで使う定数の宣言
   const {
@@ -20,14 +22,12 @@ const ChangePassword = () => {
 
   // パスワード変更の処理
   const onSubmit: SubmitHandler<changePasswordInput> = (data) => {
-    createUserWithEmailAndPassword(
-      firebaseAuth,
-      data.password,
-      data.newPassword
-    ).then((userCredential) => {
-      navigate("/login");
-      alert("パスワードを変更しました！");
-    });
+    if (user) {
+      updatePassword(user, data.newPassword).then((userCredential) => {
+        navigate("/login");
+        alert("パスワードを変更しました！");
+      });
+    }
   };
 
   return (
