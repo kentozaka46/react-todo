@@ -24,7 +24,7 @@ const ChangePassword = () => {
   const onSubmit: SubmitHandler<changePasswordInput> = (data) => {
     if (user) {
       updatePassword(user, data.newPassword).then((userCredential) => {
-        navigate("/login");
+        navigate("/");
         alert("パスワードを変更しました！");
       });
     }
